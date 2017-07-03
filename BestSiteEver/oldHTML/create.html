@@ -29,7 +29,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <a href="home.html" class="logo">
+                        <a href="index.html" class="logo">
                             <img src="images/herohqbanner.png" alt="" width="350" height="130">
                         </a>
                         <div class="desc">
@@ -55,7 +55,7 @@
                         <nav id="nav">
                             <ul class="menu">
                                 <li class="page_hom">
-                                    <a href="home.html">
+                                    <a href="index.html">
                                         <span>Accueil</span>
                                     </a>
                                 </li>
@@ -66,27 +66,50 @@
                         </nav>
                     </div>
 
-                    <!-- Hero Details -->
+                    <!-- Create -->
                     <div class="col-xs-12 col-sm-9">
-                        <div class="content" id="hero_details">
-                            <h1 class="page-title">Un héro en détail</h1>
+                        <div class="content" id="new_hero">
 
-                            <section class="section details">
-                                <div class="row">
-                                    <div class="col-vxs-12 col-xs-6 col-sm-5">
-                                        <div class="avatar-wrap">
-                                            <img class="avatar" src="images/Dva_portrait.png" alt="D.Va">
+                            <h1 class="page-title">Nouvelle candidature</h1>
+                            <section class="section">
+                                <form action="create.html" method="post">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <p class="line">
+                                                <label for="">Quel est votre nom de héros ?</label>
+                                                <input type="text" id="heroName" name="heroName" class="mb0 wide" required>
+                                            </p>
+                                            <p class="line">
+                                                <label for="">Quel âge avez vous ?</label>
+                                                <input type="number" id="heroAge" name="heroAge" class="mb0 wide" required>
+                                            </p>
+                                            <p class="line">
+                                                <label for="">Quel est votre pouvoir ?</label>
+                                                <input type="text" id="heroPow" name="heroPow" class="mb0 wide" required>
+                                            </p>
+                                            <p class="line">
+                                                <label for="">Quel est votre citation de référance ?</label>
+                                                <input type="text" id="heroCit" name="heroCit" class="mb0 wide" required>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <p class="line">
+                                                <label for="">Photo du héros</label>
+                                                <input type="file" id="heroImg" name="heroImg" class="mb0">
+                                            </p>
+                                            <p class="line ac">
+                                                <img class="current_img" src="images/hero_img_placeholder.png" alt="Visuel hero" width="200" height="200">
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="hr mt2 mb2"></div>
+                                        </div>
+
+                                        <div class="col-xs-12 ac">
+                                            <button type="button" class="btn btn_color3 recette_save"><span class="glyphicon glyphicon-ok mr0"></span><span>Valider ma candidature</span></button>
                                         </div>
                                     </div>
-                                    <div class="col-vxs-12 col-xs-6 col-sm-7">
-                                        <div class="infos">
-                                            <h1 class="name">D.Va</h1>
-                                            <p><span><span class="fwb">Citation :</span> Place aux jeunes!</span></p>
-                                            <p><span><span class="fwb">Âge :</span> 19 ans</span></p>
-                                            <p><span><span class="fwb">Pouvoir :</span> Conductrice de Meka</span></p>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </section>
                         </div>
                     </div>
@@ -105,7 +128,7 @@
 
                         <p>Le QG des héros est situé 8 avenue de la Justice. Tél: 06.65.59.66.30.30 Mail: ausecours@hero.com</p>
 
-                        <a href="home.html" class="btn btn_color1">
+                        <a href="index.html" class="btn btn_color1">
                             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                             Revenir à l'acceuil
                         </a>
@@ -118,31 +141,5 @@
             </div>
         </footer>
     </div>
-
-    <!-- Popin -->
-    <!--<div class="popin" data-popin="connect_popin">
-        <div class="popin-content">
-            <div class="popin-scroll">
-                <p class="popin-title">Connexion</p>
-                <form action="#">
-                    <p>
-                        <label for="co_user" class="fwb">Identifiant (email)</label>
-                        <input id="co_user" class="wide" type="text" />
-                    </p>
-                    <p>
-                        <label for="co_pwd" class="fwb">Mot de passe</label>
-                        <input id="co_pwd" class="wide" type="text" />
-                    </p>
-                    <p class="ac nm mt2">
-                        <button type="button" class="btn btn_big btn_color1"><span class="glyphicon glyphicon-ok"></span><span class="fwb uc">Valider</span></button>
-                    </p>
-                </form>
-            </div>
-            <button class="close popin-close"><span class="glyphicon glyphicon-remove"></span></button>
-        </div>
-        <div class="popin-backlayer"></div>
-    </div>
-
-    <div id="mobile-back-layer"></div>-->
 </body>
 </html>

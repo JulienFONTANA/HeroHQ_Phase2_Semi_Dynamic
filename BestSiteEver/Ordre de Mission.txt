@@ -1,0 +1,134 @@
+﻿Recrues, voici le moment que vous attendiez, votre dernière mission : la création du site web du QG des Héros !
+
+Pour créer ce site web, nous allons utiliser le schéma de conception MVC (Model-View-Controller).
+Ne vous inquiétez pas, c'est très simple et nous allons vous expliquer comment faire.
+
+
+*** Le MVC ***
+
+Un schéma MVC consiste à structurer un projet en trois parties :
+- Le Model correspond aux données du projet (ex: base de données)
+- La View correspond à l'affichage du projet (ex: page web)
+- Le Controller fait le lien entre le Model et la View, il va chercher des données dans le Model et les envoie à la View pour les afficher
+
+Il y a trois dossiers importants dans ce projet : les dossiers Models, Views et Controllers :
+- Le dossier Models contient les différents models du projet ainsi que le Context (on y revient plus loin) pour les utiliser
+- Le dossier Views contient les pages cshtml (une page html pouvant utiliser les données d'un controller) pour l'affichage
+- Le dossier Controllers contient les différents controllers du projet
+
+Ces dossiers sont soumis à certaines règles pour créer de nouveaux éléments pour le MVC. Une View est toujours lié à une Action d'un Controller et il peut y avoir plusieurs Actions dans un Controller.
+Un Controller doit toujours avoir un nom finissant en "Controller" (ex : HomeController.cs)
+Une View doit avoir le même nom que l'Action qui lui est liée et doit se trouver dans un dossier du même nom que le Controller (en enlevant le suffixe "Controller").
+Ex: le controller HomeController possède une action Index, la view liée à cette action doit s'appeler Index.cshtml et doit se trouver dans le dossier Home situé dans le dossier Views.
+Si l'on souhaitait créer une page d'aide, il faudrait rajouter une action Help dans HomeController et créer un fichier Help.cshtml dans le dossier Views/Home.
+
+Le dossier Views/Shared est un peu différent, il contient les views qui ne sont pas liées à un controller en particulier, comme le Layout ou les partial views (on verra cela un peu plus loin).
+Le fichier _Layout.cshtml est une view un peu spéciale. Si votre page web etait un tableau, _Layout serait le cadre et les autres views des peintures que l'on interchange à l'intérieur.
+Elle est présente sur toutes les pages web, les autres views s'affichant à l'intérieur. La ligne "@RenderBody()" indique l'emplacement ou s'affichent les views.
+Vous n'avez normalement pas besoin de modifier _Layout.cshtml, mais vous pouvez essayer pour voir ce que ça change sur les pages.
+
+
+Pour pouvoir continuer, il nous faut recréer notre base de données contenant tous les héros que nous avons retrouvé.
+Ouvrez le fichier BDD_Hero_script.sql, et suivez les instructions se trouvant à l'intérieur.
+
+Nous avons déjà réussi à recréer la page d'accueil pour vous aider, avec la base de données nous allons pouvoir l'utiliser comme exemple.
+
+
+	** Models **
+
+Dans le dossier Models vous pouvez trouver deux fichiers :
+- Le fichier Hero.cs contient la classe Hero, représentant le model des données présentes dans notre base de données (un Hero ayant un nom, un pouvoir, ...).
+- Le fichier Context.cs contient la classe Context, héritant de DbContext, qui représente la base de données que nous allons utiliser. Notre base de données contenant une liste de Heros,
+notre Context contient un DbSet (l'équivalent d'une List, mais pour une base de données) de Hero. Ce Context est le lien avec notre base de données, c'est à travers lui que nous l'utiliserons.
+
+	** Views **
+
+Comme expliqué plus haut, une View doit se trouver dans le dossier au nom de son Controller et avoir le nom de son Action. Vous pourrez trouver le fichier Index.cshtml dans le dossier Views/Home.
+Ce fichier ressemble en tout point à un fichier HTML normal, à l'exception que nous pouvons rajouter certains morceaux de code C# en utilisant le symbole @ pour modifier l'affichage de la page.
+Par exemple, vous trouverez tout en haut la ligne "@using BestSiteEver.Models;", le @ indique que c'est une ligne de code C# et indique à la page sur quel Model de données se base cette page.
+Ensuite, nous avons "@model List<Hero>". Cette ligne indique le type de données envoyé à notre View par son Controller, ici une liste de Hero.
+Ces données sont utilisables sur cette page grâce à une variable appelée Model, comme vous pouvez le voir plus bas avec un foreach récupérant chaque objets Hero dans notre liste pour les afficher.
+Enfin, plus bas se trouve "@Url.Action(" Create", "Hero")", cette ligne fait appel à la fonction Action qui permet de créer un lien vers une autre page en fonction du nom de l'Action et du Controller passés.
+Dans cet exemple, ça créé un lien vers l'Action Create du Controller Hero, que vous auraient à créer plus tard par vous même.
+
+	** Controllers **
+
+Si nous avons une View Index.cshtml dans le dossier Views/Home, ça veut dire que nous avons un Controller HomeController dans le dossier Controllers.
+Le fichier HomeController.cs contient la classe HomeController, héritant de Controller, et possède l'action Index permettant de charger la page d'accueil.
+HomeController contient la propriété "Context bdd" qui nous permet d'accéder à notre base de données (bdd est initialisée dans le constructeur de HomeController) et l'Action Index qui charge la page d'accueil.
+Dans Index, on récupère une liste de huit héros grâce à une requête Linq (comme expliqué dans les commentaires du fichier) que l'on passe à la View dans le "return View(herosDispo);" pour qu'elle puisse les utiliser.
+Si une Action n'a pas besoin de passer des données à une View, elle peut faire "return View();" sans passer de paramètres. Une Action a toujours ActionResult en type de retour.
+
+
+*** Votre mission ***
+
+Maintenant que vous savez ce qu'est le MVC, vous allez pouvoir finir de réparer ce site web.
+Pour avoir un QG fonctionnel, il nous faut une page qui nous permet de chercher des héros, une page pour afficher les détails d'un héros et une page pour enregister un nouveau héros.
+
+Pour ce faire, vous allez devoir :
+- Créer un nouveau Controller : HeroController
+- Créer trois Actions dans HeroController : Search, Details et Create
+- Créer trois Views dans Views/Hero : Details, Search et Create
+
+Si jamais vous rencontrez un problème ou que vous vous demandez si un fonction existe déjà pour faire quelque chose, faitent une recherche Google rapide et vous pourriez trouver votre réponse.
+Sinon vous ne trouvez pas, vous pouvez demander l'aide de votre instructeur.
+
+
+	** HeroController **
+
+Tout comme HomeController, HeroController doit hériter de Controller et doit pouvoir accéder et utiliser la base de données.
+
+	** Actions Details, Search et Create **
+
+Ces trois Actions doivent être présentes dans HeroController.
+- Details doit recevoir en paramètre un int représentant l'Id d'un héros, doit récupérer les informations du héros et les passer à la View.
+Dans Details, le paramètre sera passé grâce à l'URL, par exemple acceder à l'URL /Hero/Details/1 nous fera acceder à l'Action Detail avec 1 en paramètre.
+Vous devrez faire toutes les vérifications nécessaires sur le paramètre Id pour vous assurer qu'il soit valide (Id > 0 et correspondant à un Héros).
+- Search doit posséder l'attribut [HttpGet] avant le début de la fonction, ça veux dire que cette Action est appelée quand on envoi un formulaire avec la méthode Get (plus de détails dans les Views).
+Search doit recevoir en paramètre une string permettant de rechercher les héros possédant cette string dans leur nom.
+Ce paramètre est envoyé à Search grâce au formulaire présent dans sa View (expliqué plus loin). Search doit retourner une liste de héros à afficher.
+Vous devrez faire toutes les vérifications nécessaires sur le paramètre passé à la fonction pour vous assurer qu'il soit valide
+(si le paramètre est null, vous devez le remplacer par une chaine vide "", c'est tout les héros qui seront alors cherchés).
+- Create est spéciale, il doit y avoir deux actions Create dans HeroController.
+La première ne prends pas de paramètre et ne fait que renvoyer la View (c'est l'action qui permet d'afficher le formulaire d'enregistrement).
+La deuxième doit posséder l'attribut [HttpPost] avant le début de la fonction, ça veut dire que cette Action est appelée quand on envoi un formulaire avec la méthode Post (plus de détails dans les Views).
+Elle doit recevoir cinq paramètres : le nom, l'âge, le pouvoir, la citation et l'URL de l'image du héros à ajouter à la base de données. L'image utilisée doit se trouver dans le dossier images du projet.
+Ces paramètres sont envoyés par le formulaire présent dans sa View. Vous devez enregistrer le nouveau héros dans la base de données, pour ça vous devez créer un nouvel objet Hero et lui assigner les valeurs passés en paramètres.
+vous devez ensuite l'ajouter à la liste de héros en faisant bdd.Heros.Add(newHero) (newHero etant votre objet Hero) et sauvegarder en faisant bdd.SaveChanges();
+S'il y a une erreur lors de l'enregistrement, on recharge la View (avec un return View()), sinon on redirige l'utilisateur vers les détails du nouveau héros en utilisant Redirect(url),
+url étant l'URL pour voir les détails du nouveau héros.
+
+	** Views Details, Search et Create **
+
+Pour créer ces trois Views, vous devrez utiliser le code HTML présent dans le dossier oldHTML comme base. Vous devrez les adapter pour pouvoir les utiliser dans ce projet MVC.
+- Details doit afficher le nom, l'âge, le pouvoir, la citation et l'image du héros choisi.
+- Search doit afficher la liste des héros dont le nom contient la recherche effectuée. La view contient un formulaire (la balise <form> utilisant la méthode get) qui permet d'envoyer la recherche à l'Action Search,
+l'attribut action du formulaire doit avoir l'URL de cette Action en Paramètre (l'url doit ressembler à NomController/NomAction),
+assurez-vous que le name et l'id de votre champs de recherche (balise <input>) soit le même que le paramètre reçu par l'Action.
+Si la recherche ne retourne pas de héros, vous devez juste afficher la balise <p> en commentaire dans le fichier.
+Envoyer un formulaire avec la méthode GET sert à indiquer que l'on souhaite récuperer des informations de la base de données sans les modifier.
+- Create doit permettre à l'utilisateur d'ajouter un nouveau héros à la base de données. La view contient un formulaire (la balise <form> utilisant la méthode post) qui permet d'envoyer les informations à l'Action Create,
+l'attribut action du formulaire doit avoir l'URL de cette Action en Paramètre (l'url doit ressembler à NomController/NomAction),
+assurez-vous que les name et les id de vos champs (balises <input>) soit les mêmes que les paramètres reçus par l'Action.
+Envoyer un formulaire avec la méthode POST sert à indiquer que les informations passées dans le formulaires doivent être ajoutées à la base de données.
+
+
+Vous avez maintenant toutes les clés en mains pour finir de créer le QG des Héros. Si jamais vous avez une question ou besoin d'aide, n'oubliez pas de faire une petite recherche Google avant d'appeler votre instructeur.
+Appelez votre instructeur quand vous pensez avoir fini pour qu'il puisse vérifier votre travail.
+
+
+*** BONUS ***
+
+Il vous reste tous de fois une dernière fonctionnalité de MVC à apprendre : les Partials Views.
+
+En résumé, une partial view est à la view ce qu'une fonction est à un programme. C'est une partie de code HTML qui n'est pas lié à une Action est qui peut être appelée n'importe où.
+Une partial view sert en général à décharger les views de morceaux de codes similaires apparaissant dans plusieurs views différentes.
+Dans le cas de ce projet, nous allons transformer les blocs d'HTML affichant les vignettes des héros (présents dans Index et Search) en une seule partial view.
+
+- Premièrement, créez dans le dossier Views/Shared le fichier _Hero.Cshtml (le "_" avant le nom du fichier est une convention pour nommer une partial view).
+- Ensuite, récuperez le bloc de code HTML présent dans Index servant à afficher la vignette d'un héros (celui présent dans le foreach) et mettez le dans notre nouveau fichier.
+- Comparé à la view Index, notre partial view ne va recevoir qu'un seul héros en model, vous devez donc precisez à la partial view que le model utilisé sera de type Hero (pensez à mettre le using adéquat).
+- Maintenant, la vue doit utiliser les informations du Model pour afficher les informations du héros.
+- Une fois la partial view prête, vous pouvez enlever le blocs HTML présent dans le foreach d'Index et le remplacer par @Html.Partial("_Hero", hero).
+
+Si votre partial view fonctionne correctement dans Index, effectuez les modifications nécessaires dans Search.cshtml pour afficher les résultats de la recherche.
